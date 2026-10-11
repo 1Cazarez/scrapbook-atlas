@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.expo/
+pnpm-lock.yaml
+apps/mobile/ios/
+apps/mobile/android/
+
+# The project contract and the milestone specs are source documents, not code.
+CLAUDE.md
+docs/

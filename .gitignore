@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+*.tsbuildinfo
+
+# Expo
+.expo/
+web-build/
+expo-env.d.ts
+.metro-health-check*
+
+# generated native projects (managed workflow; regenerate with expo prebuild)
+apps/mobile/ios/
+apps/mobile/android/
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# env files: only the .example files are tracked
+.env
+.env.*
+!.env.example
+
+# logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+pnpm-debug.*
+
+# editors and OS
+.DS_Store
+*.pem

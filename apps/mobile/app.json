@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "Scrapbook Atlas",
+    "slug": "scrapbook-atlas",
+    "version": "0.1.0",
+    "scheme": "scrapbookatlas",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.scrapbookatlas.app"
+    },
+    "android": {
+      "package": "com.scrapbookatlas.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#c8b085",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 180,
+          "resizeMode": "contain",
+          "backgroundColor": "#c8b085",
+          "dark": {
+            "backgroundColor": "#2c2a28"
+          }
+        }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "16.4"
+          },
+          "android": {
+            "minSdkVersion": 26
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
