@@ -1,0 +1,23 @@
+# Milestone 0: the scaffold boots and the placeholder screen renders.
+# CLAUDE.md asks for one end-to-end flow per milestone; this is M0's.
+appId: com.scrapbookatlas.app
+name: M0 placeholder screen
+---
+- launchApp:
+    clearState: true
+
+# The header, the Caveat title and the card body: if the fonts or the shared
+# design tokens failed to load, the app would not get this far.
+- assertVisible: 'Scrapbook Atlas'
+- assertVisible: 'Once upon a time…'
+- assertVisible: 'Milestone 0'
+- assertVisible:
+    text: '.*The scaffold is up.*'
+
+# One labelled swatch per design token, as the screen-reader labels expose them.
+- assertVisible:
+    text: 'accent, #d9603a'
+- assertVisible:
+    text: 'night, #0b0a24'
+
+- takeScreenshot: placeholder-screen

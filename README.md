@@ -116,8 +116,27 @@ Run from the repo root:
 | `pnpm api`       | API in watch mode                        |
 | `pnpm mobile`    | Metro for the development client         |
 
-CI ([.github/workflows/ci.yml](.github/workflows/ci.yml)) runs typecheck, lint, a
-formatting check and tests on every push and pull request.
+## CI
+
+Two workflows run on every push and pull request:
+
+- **[ci.yml](.github/workflows/ci.yml)** — typecheck, lint, a formatting check and the
+  unit tests. Fast.
+- **[android-emulator.yml](.github/workflows/android-emulator.yml)** — builds the Android
+  app, boots a KVM-accelerated emulator and drives the current milestone's Maestro flow,
+  saving a screenshot as a build artifact. Slow, which is why it is separate. GitHub's
+  `ubuntu-latest` x86 runners expose `/dev/kvm`; without that the emulator falls back to
+  software emulation and effectively never boots.
+
+Maestro flows live in [apps/mobile/.maestro/](apps/mobile/.maestro/), one per milestone.
+Run one against a local emulator or simulator with:
+
+```bash
+maestro test apps/mobile/.maestro/m0-placeholder.yaml
+```
+
+There is no iOS equivalent in CI. Launching an iOS simulator needs macOS, so that check
+is manual.
 
 ## Environment variables
 
@@ -157,6 +176,19 @@ here.
   Native Testing Library 14 made `render` async; `screen` is not populated by a wrapped
   render, and all screens here need a `SafeAreaProvider`. See
   [apps/mobile/src/test/render.tsx](apps/mobile/src/test/render.tsx).
-- **No Maestro end-to-end flow yet.** CLAUDE.md asks for one per milestone, but
-  Milestone 0's placeholder screen has no flow to drive; the first one lands with the map
-  in Milestone 1.
+- **SDK 57 rejects `newArchEnabled` and `jsEngine` in app config.** Both were removed
+  from [apps/mobile/app.json](apps/mobile/app.json) because `expo-doctor` fails schema
+  validation on them: the New Architecture and Hermes are the only option in SDK 57, so
+  CLAUDE.md's requirement holds by default. The generated Android project confirms it
+  with `newArchEnabled=true` and `hermesEnabled=true` in `gradle.properties`.
+- **iOS targets 16.4, not 16.0.** Expo SDK 57's `expo-build-properties` enforces a 16.4
+  floor, which is the lowest value it accepts and still satisfies "iOS 16+".
+- **`expo-system-ui` is installed.** `userInterfaceStyle: automatic` in the app config is
+  inert on Android without it, and `expo prebuild` warns as much.
+- **The emulator CI job drives a release-variant APK, not the development client.**
+  [.github/workflows/android-emulator.yml](.github/workflows/android-emulator.yml) builds
+  `assembleRelease`, which embeds the JS bundle so the flow does not depend on a Metro
+  server staying alive for the length of a CI run; Expo's template signs release with the
+  debug keystore, so this needs no secrets. The trade-off is that CI exercises the native
+  project, the bundle and the screen, but not the dev-client-over-Metro path — that is
+  still worth checking by hand once per platform.
