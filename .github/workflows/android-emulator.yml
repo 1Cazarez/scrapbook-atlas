@@ -41,7 +41,13 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      # `packages` must be set explicitly: the action's default includes the
+      # obsolete `tools` package, which Google has removed from the SDK
+      # repository, so sdkmanager exits non-zero. Expo SDK 57 compiles and
+      # targets API 36.
       - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-36'
 
       - name: Install
         run: pnpm install --frozen-lockfile
